@@ -1,0 +1,69 @@
+version: "3.9"
+services:
+  sql_server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql_server
+    environment:
+      - ACCEPT_EULA=Y
+      - CHECK_POLICY=OFF
+      - MSSQL_SA_PASSWORD=root@123
+    ports:
+      - 1433:1433
+    networks:
+      - localnet
+    volumes:
+          - sqldata:/var/opt/mssql
+  elasticsearch:
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - localnet
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.1.1
+    ports:
+        - "5601:5601"
+    environment:
+        ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+        - localnet
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - rmqdata:/var/lib/rabbitmq/
+        - rmqlog:/var/log/rabbitmq
+    networks:
+        - localnet
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+        - 6380:6379
+    networks:
+        - localnet
+networks:
+  localnet:
+    driver: bridge
+volumes:
+    sqldata:
+        driver: local
+    esdata:
+        driver: local
+    rmqdata:
+        driver: local
+    rmqlog:
+        driver: local
