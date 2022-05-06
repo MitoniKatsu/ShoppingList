@@ -33,7 +33,7 @@ namespace SL.Data.ModelConfigs
 
             builder.Property(o => o.LastLogin)
                 .HasColumnType("datetime")
-                .IsRequired(false);
+                .IsRequired();
 
             builder.HasKey(o => o.Id);
         }

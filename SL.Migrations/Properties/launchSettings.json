@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SL.Migrations": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SLConnString": "Server=localhost;Database=SL;User Id=sa;Password=root@123"
+      }
+    }
+  }
+}

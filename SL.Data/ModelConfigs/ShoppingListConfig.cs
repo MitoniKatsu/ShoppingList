@@ -24,9 +24,6 @@ namespace SL.Data.ModelConfigs
 
             builder.HasKey(o => o.Id);
 
-            builder.HasOne(p => p.UserAccount)
-                .WithMany()
-                .HasForeignKey(o => o.UserId);
         }
     }
 }

@@ -29,15 +29,6 @@ namespace SL.Data.ModelConfigs
 
             builder.HasKey(o => o.Id);
 
-            builder.HasOne(p => p.ListItem)
-                .WithMany()
-                .HasForeignKey(o => o.ListItemId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(p => p.ShoppingList)
-                .WithMany()
-                .HasForeignKey(o => o.ShoppingListId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
