@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SL.Data.Models
 {
-    class ShoppingListItem
+    public class ShoppingListItem
     {
         public Guid Id { get; set; }
         public Guid ShoppingListId { get; set; }

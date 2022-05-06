@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SL.Data
 {
-    class ShoppingContext : DbContext, IShoppingContext
+    public class ShoppingContext : DbContext, IShoppingContext
     {
         public ShoppingContext()
         {

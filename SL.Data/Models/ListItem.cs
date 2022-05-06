@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SL.Data.Models
 {
-    class ListItem
+    public class ListItem
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
