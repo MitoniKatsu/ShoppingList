@@ -9,10 +9,42 @@ namespace SL.Domain.Repositories
 {
     public interface IUserAccountRepository
     {
+        /// <summary>
+        /// Creates a new user account with provided name and email.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
         Task<UserAccount> Create(string name, string email);
+
+        /// <summary>
+        /// Get a list of user accounts
+        /// </summary>
+        /// <returns></returns>
         IList<UserAccount> GetList();
+
+        /// <summary>
+        /// Get a user account by Email, or null if not found.
+        /// Throws <see cref="InvalidOperationException"/> if email is null or empty.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         UserAccount GetUserAccountByEmail(string email);
+
+        /// <summary>
+        /// Get a user account by Id, or null if not found
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         UserAccount GetUserAccountById(Guid id);
+
+        /// <summary>
+        /// Updates a user account LastLogin to current datetime.
+        /// /// Throws <see cref="InvalidOperationException"/> if provided account is null or empty.
+        /// /// Throws <see cref="KeyNotFoundException"/> if provided account is not found.
+        /// </summary>
+        /// <param name="updatedAccount"></param>
+        /// <returns></returns>
         Task<UserAccount> UpdateLastLogin(UserAccount updatedAccount);
     }
 
@@ -24,7 +56,7 @@ namespace SL.Domain.Repositories
         {
             _dbContext = context;
         }
-
+        
         public IList<UserAccount> GetList()
         {
             return _dbContext.UserAccounts
@@ -33,7 +65,7 @@ namespace SL.Domain.Repositories
 
         public UserAccount GetUserAccountById(Guid id)
         {
-            var account = _dbContext.UserAccounts
+            var account = _dbContext.UserAccounts.ToList()
                 .FirstOrDefault(o => o.Id.Equals(id));
 
             return account;
@@ -46,7 +78,7 @@ namespace SL.Domain.Repositories
                 throw new InvalidOperationException($"Unable to get user by email. Provided email is {(email == null ? "null" : "empty")}.");
             }
 
-            var account = _dbContext.UserAccounts
+            var account = _dbContext.UserAccounts.ToList()
                 .FirstOrDefault(o => o.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase));
 
             return account;
@@ -77,7 +109,7 @@ namespace SL.Domain.Repositories
             {
                 throw new InvalidOperationException("Unable to update last login. Provided account is null.");
             }
-            var account = _dbContext.UserAccounts
+            var account = _dbContext.UserAccounts.ToList()
                 .FirstOrDefault(o => o.Id.Equals(updatedAccount.Id));
 
             if (account == null)
