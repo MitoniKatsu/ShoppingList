@@ -13,7 +13,7 @@ namespace SL.Domain.Repositories
         IList<UserAccount> GetList();
         UserAccount GetUserAccountByEmail(string email);
         UserAccount GetUserAccountById(Guid id);
-        Task UpdateLastLogin(UserAccount updatedAccount);
+        Task<UserAccount> UpdateLastLogin(UserAccount updatedAccount);
     }
 
     public class UserAccountRepository : IUserAccountRepository
@@ -41,6 +41,11 @@ namespace SL.Domain.Repositories
 
         public UserAccount GetUserAccountByEmail(string email)
         {
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new InvalidOperationException($"Unable to get user by email. Provided email is {(email == null ? "null" : "empty")}.");
+            }
+
             var account = _dbContext.UserAccounts
                 .FirstOrDefault(o => o.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase));
 
@@ -65,7 +70,7 @@ namespace SL.Domain.Repositories
             return account;
         }
 
-        public async Task UpdateLastLogin(UserAccount updatedAccount)
+        public async Task<UserAccount> UpdateLastLogin(UserAccount updatedAccount)
         {
             var now = DateTime.UtcNow;
             if (updatedAccount == null)
@@ -77,12 +82,14 @@ namespace SL.Domain.Repositories
 
             if (account == null)
             {
-                throw new InvalidOperationException("Unable to update last login. Provided account not found.");
+                throw new KeyNotFoundException("Unable to update last login. Provided account not found.");
             }
 
             account.LastLogin = now;
 
             await _dbContext.SaveChangesAsync();
+
+            return account;
         }
     }
 }
