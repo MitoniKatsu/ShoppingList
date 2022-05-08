@@ -23,6 +23,7 @@ namespace SL.Data
         public virtual DbSet<ListItem> ListItems { get; set; }
         public virtual DbSet<ShoppingList> ShoppingLists { get; set; }
         public virtual DbSet<UserAccount> UserAccounts { get; set; }
+        public virtual DbSet<ShoppingListItem> ShoppingListItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

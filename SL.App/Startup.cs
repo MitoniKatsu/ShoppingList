@@ -40,9 +40,13 @@ namespace SL.App
 
             // data access layer
             services.AddTransient<IUserAccountRepository, UserAccountRepository>();
+            services.AddTransient<IListItemRepository, ListItemRepository>();
+            services.AddTransient<IShoppingListRepository, ShoppingListRepository>();
+            services.AddTransient<IShoppingListItemRepository, ShoppingListItemRepository>();
 
             // service layer
             services.AddTransient<IUserAccountService, UserAccountService>();
+            services.AddTransient<IShoppingListService, ShoppingListService>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
