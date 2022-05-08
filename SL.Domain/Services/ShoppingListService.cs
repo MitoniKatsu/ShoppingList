@@ -13,7 +13,8 @@ namespace SL.Domain.Services
 {
     public interface IShoppingListService
     {
-        Task<IActionResult> AddToShoppingList(Guid shoppingListId, Guid? itemId, string itemName);
+        Task<IActionResult> AddToShoppingList(Guid shoppingListId, Guid itemId);
+        Task<IActionResult> AddToShoppingList(Guid shoppingListId, string itemName);
         IActionResult GetAutoCompleteList();
         Task<IActionResult> LoadShoppingList(Guid userId);
         Task<IActionResult> UpdateShoppingListItem(Guid shoppingListItemId, ShoppingListItemAction action);
@@ -49,7 +50,35 @@ namespace SL.Domain.Services
             return new OkObjectResult(shoppingList);
         }
 
-        public async Task<IActionResult> AddToShoppingList(Guid shoppingListId, Guid? itemId, string itemName)
+        public async Task<IActionResult> AddToShoppingList(Guid shoppingListId, Guid itemId)
+        {
+            var shoppingList = _shoppingListRepository.GetShoppingListById(shoppingListId);
+
+            if (shoppingList == null)
+            {
+                return new NotFoundResult();
+            }
+
+            var listItem = _listItemRepository.GetList().FirstOrDefault(o => o.Id == itemId);
+
+            if (listItem == null)
+            {
+                return new BadRequestObjectResult("The provided itemId is invalid.");
+            }
+
+            var shoppingListItem = new ShoppingListItem
+            {
+                ShoppingListId = shoppingListId,
+                Complete = false,
+                ListItemId = listItem.Id
+            };
+ 
+            shoppingList = await _shoppingListRepository.AddToShoppingList(shoppingList.Id, shoppingListItem);
+
+            return new OkObjectResult(shoppingList);
+        }
+
+        public async Task<IActionResult> AddToShoppingList(Guid shoppingListId, string itemName)
         {
             var shoppingList = _shoppingListRepository.GetShoppingListById(shoppingListId);
 
@@ -63,23 +92,16 @@ namespace SL.Domain.Services
                 Complete = false
             };
 
-            if (itemId != null)
+            if (string.IsNullOrEmpty(itemName))
             {
-                // list item already exists, add to shopping list
-                shoppingListItem.ListItemId = itemId.Value;
+                return new BadRequestObjectResult("The provided item name cannot be empty.");
             }
-            else
+
+            shoppingListItem.ListItem = new ListItem
             {
-                if (string.IsNullOrEmpty(itemName))
-                {
-                    return new BadRequestObjectResult("The provided item name cannot be empty.");
-                }
-                // list item does not exist, create it and add to shopping list
-                shoppingListItem.ListItem = new ListItem
-                {
-                    Name = itemName
-                };
-            }
+                Name = itemName
+            };
+
             shoppingList = await _shoppingListRepository.AddToShoppingList(shoppingList.Id, shoppingListItem);
 
             return new OkObjectResult(shoppingList);

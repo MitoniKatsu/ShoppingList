@@ -27,6 +27,19 @@ namespace SL.Domain.Repositories
 
         public async Task<ShoppingListItem> Create(Guid shoppingListId, Guid listItemId)
         {
+            var shoppingList = _dbContext.ShoppingLists.FirstOrDefault(o => o.Id == shoppingListId);
+            if (shoppingList == null)
+            {
+                throw new KeyNotFoundException("ShoppingList with the provided Id cannot be found.");
+            }
+
+            var listItem = _dbContext.ListItems.FirstOrDefault(o => o.Id == listItemId);
+            if (listItem == null)
+            {
+                throw new KeyNotFoundException("ListItem with the provided Id cannot be found.");
+            }
+
+
             var shoppingListItem = new ShoppingListItem
             {
                 ShoppingListId = shoppingListId,

@@ -24,6 +24,11 @@ namespace SL.App.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Updates an existing shoppingListItem's complete status, toggling between true and false values
+        /// </summary>
+        /// <param name="shoppingListItemId"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("{shoppingListItemId:required}")]
         public async Task<IActionResult> ToggleComplete([FromRoute] Guid shoppingListItemId)
@@ -39,13 +44,18 @@ namespace SL.App.Controllers
             }
         }
 
+        /// <summary>
+        /// Removes a shoppingListItem from an existing shoppingList
+        /// </summary>
+        /// <param name="shoppingListItemId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("{shoppingListItemId:required}")]
         public async Task<IActionResult> DeleteShoppingListItem([FromRoute] Guid shoppingListItemId)
         {
             try
             {
-                return await _shoppingListService.UpdateShoppingListItem(shoppingListItemId, Domain.Enum.ShoppingListItemAction.TOGGLE_COMPLETE);
+                return await _shoppingListService.UpdateShoppingListItem(shoppingListItemId, Domain.Enum.ShoppingListItemAction.DELETE);
             }
             catch (Exception ex)
             {

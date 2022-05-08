@@ -24,6 +24,10 @@ namespace SL.App.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets a list of all listItems currently in the system (used for autocomplete)
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetList()
         {

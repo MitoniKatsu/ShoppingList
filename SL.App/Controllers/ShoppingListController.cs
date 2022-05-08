@@ -24,6 +24,11 @@ namespace SL.App.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets a shopping list by the provided userId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{userId:required}")]
         public async Task<IActionResult> GetShoppingList([FromRoute] Guid userId)
@@ -39,13 +44,26 @@ namespace SL.App.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a new shoppingListItem to an existing shoppingList.  This can be specified by either listItemid if listitem is pre-exiting, or itemName if listItem is being added.
+        /// </summary>
+        /// <param name="shoppingListId"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("{shoppingListId:required}")]
         public async Task<IActionResult> AddToShoppingList([FromRoute] Guid shoppingListId, [FromBody][Required] AddToShoppingListDto dto)
         {
             try
             {
-                return await _shoppingListService.AddToShoppingList(shoppingListId, dto.ListItemId, dto.ItemName);
+                if (dto.ListItemId == null)
+                {
+                    return await _shoppingListService.AddToShoppingList(shoppingListId, dto.ItemName);
+                }
+                else
+                {
+                    return await _shoppingListService.AddToShoppingList(shoppingListId, dto.ListItemId.Value);
+                }
             }
             catch (Exception ex)
             {

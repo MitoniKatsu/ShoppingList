@@ -25,7 +25,7 @@ namespace SL.App.Controllers
         }
 
         /// <summary>
-        /// Logs the provided user account in by userId and updates last logged in datetime
+        /// Retrieves a userAccount by userId and updates lastLoggedIn datetime
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -45,7 +45,7 @@ namespace SL.App.Controllers
         }
 
         /// <summary>
-        /// Logs the provided user account in by email address
+        /// Retrieves a userAccount by email address and name, and updates lastLoggedIn datetime. If no account exists for the provided email, one is created.
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
