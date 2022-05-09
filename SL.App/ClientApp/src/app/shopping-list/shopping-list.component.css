@@ -1,0 +1,6 @@
+.list-backdrop {
+  height: calc(100% - 16px);
+  max-width: 600px;
+  width: auto;
+  background-color: whitesmoke;
+}

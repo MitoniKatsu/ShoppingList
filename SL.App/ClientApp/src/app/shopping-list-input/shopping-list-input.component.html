@@ -1,0 +1,23 @@
+<p>shopping-list-input works!</p>
+<form [formGroup]="shoppingList">
+  <div fxLayout="row">
+    <div fxLayout="row">
+      <mat-form-field>
+        <input type="text" placeholder="Please enter an item name" aria-label="ShoppingItemName" matInput [matAutocomplete]="auto" formControlName="itemInput">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of ($filteredOptions | async)" [value]="option.name">
+            {{option.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end">
+      <button mat-icon-button color="primary" (click)="clearInput()">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <button mat-icon-button color="accent">
+        <mat-icon>done</mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

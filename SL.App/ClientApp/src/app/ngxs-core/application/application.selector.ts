@@ -25,4 +25,9 @@ export class ApplicationStateSelector {
 
     return user;
   }
+
+  @Selector([ApplicationState])
+  static getListItems(state: ApplicationStateModel) {
+    return state.listItems;
+  }
 }

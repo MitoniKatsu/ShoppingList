@@ -17,19 +17,25 @@ import { ShoppingListState } from './ngxs-core/sl/sl.state';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import {
+  MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule,
   MatIconModule, MatInputModule, MatProgressSpinnerModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoginService } from './services/login.service';
 import { ShoppingListService } from './services/shopping-list.service';
+import { environment } from 'src/environments/environment';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { ShoppingListInputComponent } from './shopping-list-input/shopping-list-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    ShoppingListComponent,
+    ShoppingListInputComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -38,7 +44,7 @@ import { ShoppingListService } from './services/shopping-list.service';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' }
     ]),
-    NgxsModule.forRoot([ApplicationState, ShoppingListState]),
+    NgxsModule.forRoot([ApplicationState, ShoppingListState], {developmentMode: !environment.production}),
     NgxsFormPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
@@ -50,6 +56,7 @@ import { ShoppingListService } from './services/shopping-list.service';
     MatInputModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
     ReactiveFormsModule,
     FlexLayoutModule
   ],
