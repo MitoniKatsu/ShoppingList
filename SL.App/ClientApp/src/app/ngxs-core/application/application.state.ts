@@ -1,7 +1,9 @@
-import { Action, State, StateContext, Store } from '@ngxs/store';
+import { Action, NgxsOnInit, State, StateContext, Store } from '@ngxs/store';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoginService } from 'src/app/services/login.service';
+import { ShoppingListService } from 'src/app/services/shopping-list.service';
+import { ShoppingListActions } from '../sl/sl.action';
 import { ApplicationActions } from './application.action';
 import { ApplicationStateModel } from './application.model';
 
@@ -18,11 +20,16 @@ import { ApplicationStateModel } from './application.model';
   }
 })
 
-export class ApplicationState {
+export class ApplicationState implements NgxsOnInit {
   constructor(
     private store: Store,
-    private userSvc: LoginService
+    private userSvc: LoginService,
+    private shoppingSvc: ShoppingListService
   ) {}
+  ngxsOnInit(ctx?: StateContext<any>) {
+    this.store.dispatch(new ApplicationActions.LoadListItems())
+    .subscribe();
+  }
 
   @Action(ApplicationActions.LoginWithUserId)
   loginWithUserId({patchState}: StateContext<ApplicationStateModel>, {payload}) {
@@ -45,8 +52,10 @@ export class ApplicationState {
             userName: response.body.name,
             userEmail: response.body.email,
             returning: response.body.returning,
-            loading: false
+            loggedIn: true
           });
+          this.store.dispatch(new ShoppingListActions.LoadShoppingList(response.body.id))
+          .subscribe();
         }
     }));
   }
@@ -72,11 +81,34 @@ export class ApplicationState {
             userName: response.body.name,
             userEmail: response.body.email,
             returning: response.body.returning,
-            loading: false,
             loggedIn: true
+          });
+          this.store.dispatch(new ShoppingListActions.LoadShoppingList(response.body.id))
+          .subscribe();
+        }
+    }));
+  }
+
+  @Action(ApplicationActions.LoadListItems)
+  loadListItems({patchState}: StateContext<ApplicationStateModel>) {
+    return this.shoppingSvc.getListItems()
+    .pipe(
+      catchError(err => {
+        return throwError(err);
+      }),
+      tap(response => {
+        if (response !== null && response.status === 200) {
+          patchState({
+            listItems: response.body
           });
         }
     }));
   }
 
+  @Action(ApplicationActions.UpdateLoading)
+  updateLoadingFlag({patchState}: StateContext<ApplicationStateModel>, {payload}) {
+    return patchState({
+      loading: payload
+    });
+  }
 }

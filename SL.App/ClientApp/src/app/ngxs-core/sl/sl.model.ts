@@ -1,7 +1,8 @@
-import { ShoppingList } from 'src/app/models/shopping-list.model';
+import { ShoppingListDto } from 'src/app/models/dto/shopping-list-dto.model';
+
 
 export class ShoppingListStateModel {
-  shoppingList: ShoppingList;
+  shoppingList: ShoppingListDto;
 }
 
 

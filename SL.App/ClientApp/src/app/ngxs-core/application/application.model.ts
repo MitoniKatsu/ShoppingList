@@ -1,4 +1,4 @@
-import { ListItem } from 'src/app/models/shopping-list.model';
+import { ListItemDto } from "src/app/models/dto/list-item-dto.model";
 
 export class ApplicationStateModel {
   loggedIn: boolean;
@@ -7,5 +7,5 @@ export class ApplicationStateModel {
   userEmail: string;
   returning: boolean;
   loading: boolean;
-  listItems: ListItem[];
+  listItems: ListItemDto[];
 }

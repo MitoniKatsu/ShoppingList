@@ -8,7 +8,8 @@ app-root {
   display: block;
 }
 .full {
-  height: 100vh;
+  /* 57px for header */
+  height: calc(100vh - 73px);
 }
 body {
   margin: 0;

@@ -8,4 +8,14 @@ export namespace ApplicationActions {
     static readonly type = '[APPLICATION] Login with Email';
     constructor(public payload: {userName: string, userEmail: string}) {}
   }
+
+  export class LoadListItems {
+    static readonly type = '[APPLICATION] Load ListItems';
+    constructor() {}
+  }
+
+  export class UpdateLoading {
+    static readonly type = '[APPLICATION] Update Loading flag';
+    constructor(public payload: boolean) {}
+  }
 }
