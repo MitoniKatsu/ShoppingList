@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SL.Data.Models;
 using SL.Domain.Enum;
+using SL.Domain.Extensions;
 using SL.Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace SL.Domain.Services
                 shoppingList = await _shoppingListRepository.Create(userId);
             }
 
-            return new OkObjectResult(shoppingList);
+            return new OkObjectResult(shoppingList.ToDto());
         }
 
         public async Task<IActionResult> AddToShoppingList(Guid shoppingListId, Guid itemId)
@@ -75,7 +76,7 @@ namespace SL.Domain.Services
  
             shoppingList = await _shoppingListRepository.AddToShoppingList(shoppingList.Id, shoppingListItem);
 
-            return new OkObjectResult(shoppingList);
+            return new OkObjectResult(shoppingList.ToDto());
         }
 
         public async Task<IActionResult> AddToShoppingList(Guid shoppingListId, string itemName)
@@ -104,7 +105,7 @@ namespace SL.Domain.Services
 
             shoppingList = await _shoppingListRepository.AddToShoppingList(shoppingList.Id, shoppingListItem);
 
-            return new OkObjectResult(shoppingList);
+            return new OkObjectResult(shoppingList.ToDto());
         }
 
         public async Task<IActionResult> UpdateShoppingListItem(Guid shoppingListItemId, ShoppingListItemAction action)
@@ -125,7 +126,7 @@ namespace SL.Domain.Services
                     try
                     {
                         var shoppingListItem = await _shoppingListItemRepository.ToggleComplete(shoppingListItemId);
-                        return new OkObjectResult(shoppingListItem);
+                        return new OkObjectResult(shoppingListItem.ToDto());
                     }
                     catch (KeyNotFoundException)
                     {
@@ -141,7 +142,7 @@ namespace SL.Domain.Services
         {
             var list = _listItemRepository.GetList().ToList();
 
-            return new OkObjectResult(list);
+            return new OkObjectResult(list.ToDto());
         }
     }
 }

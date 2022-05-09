@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SL.Domain.DTO
 {
-    public class UserAccountByEmailDto
+    public class UserAccountDto
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public bool Returning { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using SL.Data.Models;
+using SL.Domain.DTO;
 using SL.Domain.Repositories;
 using SL.Domain.Services;
 using System;
@@ -50,12 +51,11 @@ namespace SL.Test.ServiceTests
             Assert.AreEqual(typeof(OkObjectResult), result.GetType());
             var response = (OkObjectResult)result;
             Assert.AreEqual(200, response.StatusCode);
-            var value = (UserAccount)response.Value;
+            var value = (UserAccountDto)response.Value;
             Assert.AreEqual(updatedAccount.Id, value.Id);
             Assert.AreEqual(updatedAccount.Name, value.Name);
             Assert.AreEqual(updatedAccount.Email, value.Email);
-            Assert.AreEqual(updatedAccount.CreatedOn, value.CreatedOn);
-            Assert.AreEqual(updatedAccount.LastLogin, value.LastLogin);
+            Assert.AreEqual(updatedAccount.CreatedOn < updatedAccount.LastLogin, value.Returning);
 
         }
 

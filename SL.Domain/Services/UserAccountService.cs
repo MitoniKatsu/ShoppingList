@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SL.Data.Models;
+using SL.Domain.Extensions;
 using SL.Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace SL.Domain.Services
 
             account = await _userAccountRepo.UpdateLastLogin(account);
 
-            return new OkObjectResult(account);
+            return new OkObjectResult(account.ToDto());
         }
 
         public async Task<IActionResult> LoginWithEmail(string name, string email)
@@ -71,12 +72,12 @@ namespace SL.Domain.Services
             {
                 account = await _userAccountRepo.Create(name, email);
 
-                return new OkObjectResult(account);
+                return new OkObjectResult(account.ToDto());
             }
 
             account = await _userAccountRepo.UpdateLastLogin(account);
 
-            return new OkObjectResult(account);
+            return new OkObjectResult(account.ToDto());
         }
     }
 }

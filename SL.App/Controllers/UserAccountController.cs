@@ -50,7 +50,7 @@ namespace SL.App.Controllers
         /// <param name="account"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> LoginByEmail([FromBody][Required] UserAccountByEmailDto account)
+        public async Task<IActionResult> LoginByEmail([FromBody][Required] CreateUserAccountDto account)
         {
             try
             {

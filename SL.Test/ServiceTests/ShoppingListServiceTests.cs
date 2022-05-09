@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using SL.Data.Models;
+using SL.Domain.DTO;
 using SL.Domain.Enum;
 using SL.Domain.Repositories;
 using SL.Domain.Services;
@@ -47,7 +48,7 @@ namespace SL.Test.ServiceTests
             Assert.AreEqual(typeof(OkObjectResult), result.GetType());
             var response = (OkObjectResult)result;
             Assert.AreEqual(200, response.StatusCode);
-            var value = (ShoppingList)response.Value;
+            var value = (ShoppingListDto)response.Value;
             Assert.AreEqual(shoppingList.Id, value.Id);
             Assert.AreEqual(shoppingList.UserId, value.UserId);
             Assert.AreEqual(shoppingList.Items.Count, value.Items.Count);
@@ -75,7 +76,7 @@ namespace SL.Test.ServiceTests
             Assert.AreEqual(typeof(OkObjectResult), result.GetType());
             var response = (OkObjectResult)result;
             Assert.AreEqual(200, response.StatusCode);
-            var value = (ShoppingList)response.Value;
+            var value = (ShoppingListDto)response.Value;
             Assert.AreEqual(newShoppingList.Id, value.Id);
             Assert.AreEqual(newShoppingList.UserId, value.UserId);
             Assert.AreEqual(newShoppingList.Items.Count, value.Items.Count);
@@ -120,7 +121,8 @@ namespace SL.Test.ServiceTests
                 Id = Guid.NewGuid(),
                 ShoppingListId = shoppingList.Id,
                 ListItemId = items[0].Id,
-                Complete = false
+                Complete = false,
+                ListItem = items[0]
             };
 
             var updatedShoppingList = shoppingList;
@@ -138,7 +140,7 @@ namespace SL.Test.ServiceTests
             Assert.AreEqual(typeof(OkObjectResult), result.GetType());
             var response = (OkObjectResult)result;
             Assert.AreEqual(200, response.StatusCode);
-            var value = (ShoppingList)response.Value;
+            var value = (ShoppingListDto)response.Value;
             Assert.AreEqual(updatedShoppingList.Id, value.Id);
             Assert.AreEqual(updatedShoppingList.UserId, value.UserId);
             Assert.AreEqual(updatedShoppingList.Items.Count, value.Items.Count);
@@ -147,7 +149,7 @@ namespace SL.Test.ServiceTests
                 var foundItem = value.Items.FirstOrDefault(o => o.Id == item.Id);
                 Assert.NotNull(foundItem);
                 Assert.AreEqual(item.ShoppingListId, foundItem.ShoppingListId);
-                Assert.AreEqual(item.ListItemId, foundItem.ListItemId);
+                Assert.AreEqual(item.ListItemId, foundItem.ListItem.Id);
             }
         }
 
@@ -220,7 +222,8 @@ namespace SL.Test.ServiceTests
                 Id = Guid.NewGuid(),
                 ShoppingListId = shoppingList.Id,
                 ListItemId = items[0].Id,
-                Complete = false
+                Complete = false,
+                ListItem = items[0]
             };
 
             var updatedShoppingList = shoppingList;
@@ -238,7 +241,7 @@ namespace SL.Test.ServiceTests
             Assert.AreEqual(typeof(OkObjectResult), result.GetType());
             var response = (OkObjectResult)result;
             Assert.AreEqual(200, response.StatusCode);
-            var value = (ShoppingList)response.Value;
+            var value = (ShoppingListDto)response.Value;
             Assert.AreEqual(updatedShoppingList.Id, value.Id);
             Assert.AreEqual(updatedShoppingList.UserId, value.UserId);
             Assert.AreEqual(updatedShoppingList.Items.Count, value.Items.Count);
@@ -247,7 +250,7 @@ namespace SL.Test.ServiceTests
                 var foundItem = value.Items.FirstOrDefault(o => o.Id == item.Id);
                 Assert.NotNull(foundItem);
                 Assert.AreEqual(item.ShoppingListId, foundItem.ShoppingListId);
-                Assert.AreEqual(item.ListItemId, foundItem.ListItemId);
+                Assert.AreEqual(item.ListItemId, foundItem.ListItem.Id);
             }
         }
 
@@ -327,12 +330,18 @@ namespace SL.Test.ServiceTests
         [Test]
         public async Task TestUpdateShoppingListItemToggleComplete()
         {
+            var item = new ListItem
+            {
+                Id = Guid.NewGuid(),
+                Name = "test"
+            };
             var shoppingListItem = new ShoppingListItem
             {
                 Id = Guid.NewGuid(),
-                ListItemId = Guid.NewGuid(),
+                ListItemId = item.Id,
                 ShoppingListId = Guid.NewGuid(),
-                Complete = false
+                Complete = false,
+                ListItem = item
             };
 
             var updatedShoppingListItem = shoppingListItem;
@@ -347,9 +356,9 @@ namespace SL.Test.ServiceTests
             Assert.AreEqual(typeof(OkObjectResult), result.GetType());
             var response = (OkObjectResult)result;
             Assert.AreEqual(200, response.StatusCode);
-            var value = (ShoppingListItem)response.Value;
+            var value = (ShoppingListItemDto)response.Value;
             Assert.AreEqual(updatedShoppingListItem.Id, value.Id);
-            Assert.AreEqual(updatedShoppingListItem.ListItemId, value.ListItemId);
+            Assert.AreEqual(updatedShoppingListItem.ListItemId, value.ListItem.Id);
             Assert.AreEqual(updatedShoppingListItem.ShoppingListId, value.ShoppingListId);
             Assert.AreEqual(updatedShoppingListItem.Complete, value.Complete);
         }
@@ -399,7 +408,7 @@ namespace SL.Test.ServiceTests
             Assert.AreEqual(typeof(OkObjectResult), result.GetType());
             var response = (OkObjectResult)result;
             Assert.AreEqual(200, response.StatusCode);
-            var value = (List<ListItem>)response.Value;
+            var value = (List<ListItemDto>)response.Value;
             Assert.AreEqual(items.Count, value.Count);
             foreach (var item in items)
             {
