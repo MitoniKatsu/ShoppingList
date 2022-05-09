@@ -1,6 +1,14 @@
-<body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container">
+<body *ngIf="$loggedIn | async; then loggedIn else loggedOut">
+
+</body>
+<ng-template #loggedIn>
+  <app-nav-menu [userName]="userName | async" [returning]="returning | async"></app-nav-menu>
+  <div class="container full">
     <router-outlet></router-outlet>
   </div>
-</body>
+</ng-template>
+<ng-template #loggedOut>
+  <app-nav-menu [userName]="userName | async" [returning]="returning | async"></app-nav-menu>
+  <div class="container full">
+  </div>
+</ng-template>
