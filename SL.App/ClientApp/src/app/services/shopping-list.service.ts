@@ -18,4 +18,8 @@ export class ShoppingListService {
   getShoppingList(userId: string): Observable<HttpResponse<ShoppingListDto>> {
     return this.http.get<ShoppingListDto>(`/api/ShoppingList/${userId}`, {observe: 'response'});
   }
+
+  addItemToShoppingList(shoppingListId: string, listItem: ListItemDto): Observable<HttpResponse<ShoppingListDto>> {
+    return this.http.put<ShoppingListDto>(`/api/ShoppingList/${shoppingListId}`, listItem, {observe: 'response'});
+  }
 }

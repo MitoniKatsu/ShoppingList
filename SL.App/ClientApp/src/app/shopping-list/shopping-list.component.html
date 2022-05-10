@@ -2,6 +2,9 @@
   <mat-card class="list-backdrop" fxFlex>
     <mat-card-content>
       <app-shopping-list-input></app-shopping-list-input>
+      <ng-container *ngFor="let item of $shoppingListItems | async">
+        <app-shopping-list-item [shoppingListItem]="item"></app-shopping-list-item>
+      </ng-container>
     </mat-card-content>
   </mat-card>
 </div>

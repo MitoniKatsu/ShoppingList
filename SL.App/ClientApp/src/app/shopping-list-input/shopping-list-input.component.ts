@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { concatMap, map, mergeMap, startWith, tap } from 'rxjs/operators';
 import { ListItemDto } from '../models/dto/list-item-dto.model';
 import { ShoppingListItemDto } from '../models/dto/shopping-list-item-dto.model';
 import { ApplicationActions } from '../ngxs-core/application/application.action';
 import { ApplicationStateSelector } from '../ngxs-core/application/application.selector';
+import { ShoppingListActions } from '../ngxs-core/sl/sl.action';
 import { ShoppingListStateSelector } from '../ngxs-core/sl/sl.selector';
 
 @Component({
@@ -16,7 +17,10 @@ import { ShoppingListStateSelector } from '../ngxs-core/sl/sl.selector';
 })
 export class ShoppingListInputComponent implements OnInit {
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private store: Store
+    ) { }
 
   shoppingList: FormGroup;
 
@@ -53,4 +57,21 @@ export class ShoppingListInputComponent implements OnInit {
     input.setValue('');
   }
 
+  addItem() {
+    if (this.shoppingList.valid && this.shoppingList.dirty) {
+      const input = this.shoppingList.controls['itemInput'];
+      if (input.value && input.value.length > 0) {
+        this.store.dispatch(new ShoppingListActions.AddToShoppingList(input.value))
+        .subscribe();
+      }
+    }
+  }
+
+  get submitDisabled() {
+    const input = this.shoppingList.controls['itemInput'];
+    if (this.shoppingList.valid && this.shoppingList.dirty && input && input.value.length > 0) {
+      return false;
+    }
+    return true;
+  }
 }

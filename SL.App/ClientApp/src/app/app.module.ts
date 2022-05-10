@@ -27,6 +27,7 @@ import { ShoppingListService } from './services/shopping-list.service';
 import { environment } from 'src/environments/environment';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingListInputComponent } from './shopping-list-input/shopping-list-input.component';
+import { ShoppingListItemComponent } from './shopping-list-item/shopping-list-item.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ShoppingListInputComponent } from './shopping-list-input/shopping-list-
     HomeComponent,
     LoginDialogComponent,
     ShoppingListComponent,
-    ShoppingListInputComponent
+    ShoppingListInputComponent,
+    ShoppingListItemComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

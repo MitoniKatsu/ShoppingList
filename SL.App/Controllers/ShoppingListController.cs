@@ -56,13 +56,13 @@ namespace SL.App.Controllers
         {
             try
             {
-                if (dto.ListItemId == null)
+                if (dto.Id == null)
                 {
-                    return await _shoppingListService.AddToShoppingList(shoppingListId, dto.ItemName);
+                    return await _shoppingListService.AddToShoppingList(shoppingListId, dto.Name);
                 }
                 else
                 {
-                    return await _shoppingListService.AddToShoppingList(shoppingListId, dto.ListItemId.Value);
+                    return await _shoppingListService.AddToShoppingList(shoppingListId, dto.Id.Value);
                 }
             }
             catch (Exception ex)

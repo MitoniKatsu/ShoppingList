@@ -8,7 +8,7 @@ namespace SL.Domain.DTO
 {
     public class AddToShoppingListDto
     {
-        public Guid? ListItemId { get; set; }
-        public string ItemName { get; set; }
+        public Guid? Id { get; set; }
+        public string Name { get; set; }
     }
 }
