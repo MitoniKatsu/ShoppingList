@@ -4,3 +4,6 @@
   width: auto;
   background-color: whitesmoke;
 }
+.content {
+  overflow-y: scroll;
+}

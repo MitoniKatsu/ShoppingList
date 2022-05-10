@@ -18,4 +18,9 @@ export namespace ApplicationActions {
     static readonly type = '[APPLICATION] Update Loading flag';
     constructor(public payload: boolean) {}
   }
+
+  export class LogoutApplication {
+    static readonly type = '[APPLICATION] Logout Application';
+    constructor() {}
+  }
 }

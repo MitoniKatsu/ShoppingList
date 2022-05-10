@@ -88,5 +88,56 @@ export class ShoppingListState {
       })
     );
   }
+
+  @Action(ShoppingListActions.DeleteFromShoppingList)
+  deleteFromShoppingList({getState, patchState}: StateContext<ShoppingListStateModel>, {payload}) {
+    this.store.dispatch(new ApplicationActions.UpdateLoading(true))
+    .subscribe();
+    const userId = getState().shoppingList.userId;
+    const id: string = payload;
+    return this.shoppingSvc.deleteItemFromShoppingList(id).pipe(
+      catchError(err => {
+        this.store.dispatch(new ApplicationActions.UpdateLoading(false))
+        .subscribe();
+        return throwError(err);
+      }),
+      tap(response => {
+        if (response !== null && response.status === 200) {
+          return this.store.dispatch(new ShoppingListActions.LoadShoppingList(userId))
+            .subscribe(() => this.store.dispatch(new ApplicationActions.UpdateLoading(false))
+            .subscribe());
+        }
+      })
+    );
+  }
+
+  @Action(ShoppingListActions.ToggleItemComplete)
+  toggleItemComplete({getState, patchState}: StateContext<ShoppingListStateModel>, {payload}) {
+    this.store.dispatch(new ApplicationActions.UpdateLoading(true))
+    .subscribe();
+    const userId = getState().shoppingList.userId;
+    const id: string = payload;
+    return this.shoppingSvc.toggleItemComplete(id).pipe(
+      catchError(err => {
+        this.store.dispatch(new ApplicationActions.UpdateLoading(false))
+        .subscribe();
+        return throwError(err);
+      }),
+      tap(response => {
+        if (response !== null && response.status === 200) {
+          return this.store.dispatch(new ShoppingListActions.LoadShoppingList(userId))
+            .subscribe(() => this.store.dispatch(new ApplicationActions.UpdateLoading(false))
+            .subscribe());
+        }
+      })
+    );
+  }
+
+  @Action(ShoppingListActions.LogoutShoppingList)
+  logoutShoppingList({patchState}: StateContext<ShoppingListStateModel>) {
+    patchState({
+      shoppingList: null
+    });
+  }
 }
 

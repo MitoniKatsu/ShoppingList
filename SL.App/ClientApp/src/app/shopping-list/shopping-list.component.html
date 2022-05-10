@@ -1,7 +1,9 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFill>
-  <mat-card class="list-backdrop" fxFlex>
-    <mat-card-content>
-      <app-shopping-list-input></app-shopping-list-input>
+  <mat-card fxLayout="column" class="list-backdrop" fxFlex>
+    <mat-card-header fxLayout="row" fxLayoutAlign="stretch center">
+      <app-shopping-list-input fxFlex></app-shopping-list-input>
+    </mat-card-header>
+    <mat-card-content class="content">
       <ng-container *ngFor="let item of $shoppingListItems | async">
         <app-shopping-list-item [shoppingListItem]="item"></app-shopping-list-item>
       </ng-container>

@@ -111,4 +111,16 @@ export class ApplicationState implements NgxsOnInit {
       loading: payload
     });
   }
+
+  @Action(ApplicationActions.LogoutApplication)
+  logoutApplication({patchState}: StateContext<ApplicationStateModel>) {
+    patchState({
+      loggedIn: false,
+      userId: null,
+      userName: null,
+      userEmail: null,
+      returning: false,
+      loading: true
+    });
+  }
 }

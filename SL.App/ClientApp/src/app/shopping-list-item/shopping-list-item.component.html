@@ -1,1 +1,14 @@
-<p>{{shoppingListItemName}}</p>
+<mat-card class="item">
+  <mat-card-content>
+    <div fxLayout="row" fxFlexAlign="start center">
+      <div fxFlex fxLayout="column" fxLayoutAlign="center start" [formGroup]="itemForm">
+        <mat-slide-toggle fxFlex (toggleChange)="toggleComplete()" (dragChange)="toggleComplete()" formControlName="complete">
+          <h5>{{shoppingListItemName.toUpperCase()}}</h5>
+        </mat-slide-toggle>
+      </div>
+      <button mat-icon-button color="primary" (click)="deleteItem()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -19,7 +19,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule,
-  MatIconModule, MatInputModule, MatProgressSpinnerModule
+  MatIconModule, MatInputModule, MatProgressSpinnerModule, MatSlideToggleModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoginService } from './services/login.service';
@@ -59,6 +59,7 @@ import { ShoppingListItemComponent } from './shopping-list-item/shopping-list-it
     MatIconModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
+    MatSlideToggleModule,
     ReactiveFormsModule,
     FlexLayoutModule
   ],
